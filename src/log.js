@@ -37,7 +37,8 @@ module.exports = {
 	noop : ()=>{
 		console.log('No replant in progress.');
 	},
-	conflict : ()=>{
+	conflict : (err)=>{
+		console.log(err.toString());
 		console.log(color.red('Issue with replant.'));
 		console.log('Fix the conflicts, continue with the rebase then `git replant --continue`');
 	},
@@ -63,6 +64,7 @@ usage: git replant [options] <branch> <new root branch>
 Available options are
     -v, --version     display git replant version
     --dry-run         display what actions this command will take, but not execute them
+    --auto            adds '-Xtheirs' to rebases. When resolving conflicts will use subtree's changes.
     *                 all other options will be passed through to the internal rebase calls.
 
 Actions:

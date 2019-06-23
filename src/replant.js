@@ -25,7 +25,7 @@ const iterate = async ()=>{
 	log.execute(cmd);
 	return exec(cmd)
 		.then(()=>iterate())
-		.catch((err)=>log.conflict());
+		.catch((err)=>log.conflict(err));
 };
 
 

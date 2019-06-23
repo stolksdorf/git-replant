@@ -1,6 +1,6 @@
 {
   "name": "git-replant",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Rebase an entire git subtree to a new root",
   "bin": "src/cli.js",
   "main": "src/cli.js",

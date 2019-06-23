@@ -5,7 +5,8 @@ const getCommitFromBranch = async (target)=>{
 	return exec(`git rev-parse --short ${target}`);
 };
 const getParentBranch = async (target)=>{
-	return exec(`git log ${target} --simplify-by-decoration --max-count=1 --skip=1 --pretty=%D`);
+	return (await exec(`git log ${target} --simplify-by-decoration --max-count=1 --skip=1 --pretty=%D`))
+		.replace('HEAD -> ', '');
 };
 
 const getBranches = async (target)=>{
@@ -43,7 +44,7 @@ const getReplantCommands = async (target, base, opts = [])=>{
 
 	const cmds = [];
 	const nest = (name, sha)=>{
-		const directChildren = allChildren.filter(({ parent })=>parent == name);
+		const directChildren = filteredChildren.filter(({ parent })=>parent == name);
 		directChildren.map((child)=>{
 			cmds.push(`git checkout ${child.name} && git rebase ${opts.join(' ')} --onto ${name} ${sha}`);
 			nest(child.name, child.sha);
@@ -53,7 +54,8 @@ const getReplantCommands = async (target, base, opts = [])=>{
 	return [].concat(
 		`git checkout ${target} && git rebase ${opts.join(' ')} ${base}`,
 		cmds,
-		siblingBranches.map(([target, sibling])=>`git branch --force ${sibling} ${target}`)
+		siblingBranches.map(([target, sibling])=>`git branch --force ${sibling} ${target}`),
+		`git checkout ${target}`
 	);
 };
 
