@@ -1,4 +1,4 @@
-# 🌱 git replant
+# 🌱 `git replant`
 
 Rebase an entire git subtree to a new root
 
@@ -35,12 +35,12 @@ Actions:
 ## install
 
 ### with node installed
-1. clone this repo
+1. download this repo
 1. make a file called `git-replant` in your `$HOME/bin` folder with the following contents
 
 ```bash
 #!/bin/bash
-node /path/to/cloned/repo/git-replant "$@"
+node /path/to/download/repo/git-replant "$@"
 ```
 
 ### with executable

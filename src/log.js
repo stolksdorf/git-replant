@@ -13,7 +13,7 @@ const color = construct({
 module.exports = {
 	commands : (cmds, effectedBranches)=>{
 		console.log();
-		console.log(color.yellow(`will execute the following commands:`));
+		console.log(color.green('🌱'), color.cyan('git replant'), color.yellow(`will execute the following commands:`));
 		console.log(cmds.map((cmd)=>color.gray(`  ${cmd}`)).join('\n'));
 		console.log();
 	},
@@ -26,7 +26,7 @@ module.exports = {
 	},
 	done : ()=>{
 		console.log();
-		console.log(color.green('🌱'), color.magenta('replant completed'), color.green('🌱'));
+		console.log(color.green('🌱'), color.cyan('replant completed'), color.green('🌱'));
 	},
 	noop : ()=>{
 		console.log('No replant in progress.');
@@ -65,6 +65,6 @@ Available options are
 Actions:
     --continue        continue the replant
     --abort           aborts and returns git tree to original state
-`);,
+`),
 
 };

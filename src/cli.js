@@ -22,6 +22,7 @@
 
 	if(args['continue']) return replant.continueReplant();
 	if(args['abort']) return replant.abort();
+
 	if(args['auto']) passthrough.push('-Xtheirs');
 
 	const [target, newRoot] = args._;
