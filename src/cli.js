@@ -17,7 +17,7 @@
 		},
 	});
 
-	if(args.help)    return console.log(require('./log.js').manpage);
+	if(args.help)    return require('./log.js').manpage();
 	if(args.version) return console.log(`v${require('../package.json').version}`);
 
 	if(args['continue']) return replant.continueReplant();

@@ -1,10 +1,8 @@
 const construct = (obj, fn)=>Object.keys(obj).reduce((a, key)=>{const [k, v] = fn(obj[key], key);a[k] = v;return a;}, {});
 const color = construct({
-	black   : 30,
 	red     : 91,
 	green   : 32,
 	yellow  : 33,
-	blue    : 34,
 	magenta : 35,
 	cyan    : 36,
 	white   : 37,
@@ -12,12 +10,8 @@ const color = construct({
 }, (val, name)=>[name, (str)=>`\x1b[${val}m${str}\x1b[0m`]);
 
 
-
 module.exports = {
-	display : (cmds, effectedBranches)=>{
-		console.log();
-		console.log(color.yellow('effected branches:'));
-		console.log(effectedBranches.map((branch)=>`  * ${color.cyan(branch.name)}`).join('\n'));
+	commands : (cmds, effectedBranches)=>{
 		console.log();
 		console.log(color.yellow(`will execute the following commands:`));
 		console.log(cmds.map((cmd)=>color.gray(`  ${cmd}`)).join('\n'));
@@ -38,12 +32,13 @@ module.exports = {
 		console.log('No replant in progress.');
 	},
 	conflict : (err)=>{
-		console.log(err.toString());
 		console.log(color.red('Issue with replant.'));
+		console.log(err.toString());
+		console.log();
 		console.log('Fix the conflicts, continue with the rebase then `git replant --continue`');
 	},
 
-	manpage : `
+	manpage : ()=>console.log(`
 rebases a branch and all descendant branches to a new root while preserving the tree structure.
 
     $ git replant A M
@@ -70,6 +65,6 @@ Available options are
 Actions:
     --continue        continue the replant
     --abort           aborts and returns git tree to original state
-`,
+`);,
 
 };

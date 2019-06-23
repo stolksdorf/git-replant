@@ -15,9 +15,9 @@ const cleanup = async ()=>{
 };
 
 const iterate = async ()=>{
-	const cmds = await progressFile.get();
-	if(!cmds) return await cleanup();
-	const [cmd, ...rest] = cmds;
+	const replantCmds = await progressFile.get();
+	if(!replantCmds) return await cleanup();
+	const [cmd, ...rest] = replantCmds;
 	if(!cmd) return await cleanup();
 
 	await progressFile.update(rest);
@@ -30,14 +30,16 @@ const iterate = async ()=>{
 
 
 const run = async (target, base, passthroughOpts = [], isDryRun)=>{
-	const affectedBranches = await utils.getAffectedBranches(target, base);
-	const cmds = await utils.getReplantCommands(target, base, passthroughOpts);
-	log.display(cmds, affectedBranches);
+	const Tree = await utils.getTree(target, base);
+
+	const replantCmds = await utils.getReplantCommands(Tree, passthroughOpts);
+	const abortCmds = utils.getAbortCommands(Tree);
+
+	log.commands(replantCmds);
 
 	if(isDryRun) return;
 
-	await progressFile.update(cmds);
-	const abortCmds = await utils.getAbortCommands(affectedBranches, base);
+	await progressFile.update(replantCmds);
 	await abortFile.update(abortCmds);
 	return iterate();
 };
@@ -48,11 +50,11 @@ const continueReplant = async ()=>{
 };
 
 const abort = async ()=>{
-	const cmds = await abortFile.get();
-	if(!cmds) return log.noop();
+	const abortCmds = await abortFile.get();
+	if(!abortCmds) return log.noop();
 
 	await exec('git rebase --abort').catch(()=>{});
-	await sequence(cmds, (cmd)=>{
+	await sequence(abortCmds, (cmd)=>{
 		log.execute(cmd);
 		return exec(cmd);
 	});
