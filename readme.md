@@ -13,7 +13,7 @@
 ### install
 
 #### with node
-Make a file called `git-replant` in your `HOME/bin` folder
+Make a file called `git-replant` in your `$HOME/bin` folder
 
 ```bash
 #!/bin/bash
@@ -21,7 +21,7 @@ node /path/to/cloned/git-replant "$@"
 ```
 
 #### with executable
-Copy the `bin/git-replant.exe` into your `[HOME]/bin` folder
+Copy the `bin/git-replant.exe` into your `$HOME/bin` folder
 
 *Note*: The exe was created using [`pkg`](https://www.npmjs.com/package/pkg) via the `npm run build` command if you wish to build it yourself.
 
