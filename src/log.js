@@ -17,6 +17,14 @@ module.exports = {
 		console.log(cmds.map((cmd)=>color.gray(`  ${cmd}`)).join('\n'));
 		console.log();
 	},
+	verbose : (tree, abortCmds)=>{
+		console.log();
+		console.log(color.magenta('Affected Git Tree:'));
+		console.log(tree);
+		console.log();
+		console.log(color.red('Abort Commands:'));
+		console.log(abortCmds.map((cmd)=>color.gray(`  ${cmd}`)).join('\n'));
+	},
 
 	error : (msg)=>{
 		throw `${color.red('Can not replant:')} ${msg}`;
@@ -57,14 +65,15 @@ usage: git replant [options] <branch> <new root branch>
    or: git replant --continue | --abort
 
 Available options are
-    -v, --version     display git replant version
-    --dry-run         display what actions this command will take, but not execute them
-    --auto            adds '-Xtheirs' to rebases. When resolving conflicts will use subtree's changes.
-    *                 all other options will be passed through to the internal rebase calls.
+    -v, --version    display git replant version
+    --verbose        displays the affected git tree and abort commands
+    --dry-run        display what actions this command will take, but not execute them
+    --auto           adds '-Xtheirs' to rebases. When resolving conflicts will use subtree's changes.
+    *                all other options will be passed through to the internal rebase calls.
 
 Actions:
-    --continue        continue the replant
-    --abort           aborts and returns git tree to original state
+    --continue       continue the replant
+    --abort          aborts and returns git tree to original state
 `),
 
 };

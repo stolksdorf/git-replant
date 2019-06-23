@@ -5,7 +5,7 @@
 	const passthrough = [];
 
 	const args = require('./minimist.js')(process.argv.slice(2), {
-		boolean : ['continue', 'dry-run', 'abort', 'help', 'version', 'auto'],
+		boolean : ['continue', 'dry-run', 'abort', 'help', 'version', 'auto', 'verbose'],
 		alias   : {
 			h : 'help',
 			v : 'version',
@@ -28,6 +28,6 @@
 	const [target, newRoot] = args._;
 	if(!target || !newRoot) throw `Replant requires a target branch and a new root branch`;
 
-	return replant.run(target, newRoot, passthrough, args['dry-run']);
+	return replant.run(target, newRoot, passthrough, args);
 
 })().catch((err)=>console.log(err));

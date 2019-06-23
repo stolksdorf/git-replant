@@ -29,10 +29,10 @@ const getTree = async (target, base)=>{
 	children.map((branch)=>{ if(branch.name == base) log.error(`'${base}' is a descendant of '${target}'.`); });
 
 	//Adds parent to branch, if it has a sibling, adds sibling name instead
-	const _temp = {};
+	const _seenBranches = {};
 	const branches = await Promise.all(children.map(async (branch)=>{
-		if(_temp[branch.sha]) return { ...branch, sibling : _temp[branch.sha].name };
-		_temp[branch.sha] = branch;
+		if(_seenBranches[branch.sha]) return { ...branch, sibling : _seenBranches[branch.sha].name };
+		_seenBranches[branch.sha] = branch;
 		return { ...branch, parent : await getParentBranch(branch.name) };
 	}));
 

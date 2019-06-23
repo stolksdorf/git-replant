@@ -29,15 +29,14 @@ const iterate = async ()=>{
 };
 
 
-const run = async (target, base, passthroughOpts = [], isDryRun)=>{
+const run = async (target, base, passthroughOpts = [], args)=>{
 	const Tree = await utils.getTree(target, base);
-
 	const replantCmds = await utils.getReplantCommands(Tree, passthroughOpts);
 	const abortCmds = utils.getAbortCommands(Tree);
 
+	if(args['verbose']) log.verbose(Tree, abortCmds);
 	log.commands(replantCmds);
-
-	if(isDryRun) return;
+	if(args['dry-run']) return;
 
 	await progressFile.update(replantCmds);
 	await abortFile.update(abortCmds);

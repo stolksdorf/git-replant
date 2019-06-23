@@ -22,8 +22,9 @@ usage: git replant [options] <branch> <new root branch>
 
 Available options are
     -v, --version     display git replant version
+    --verbose         displays the affected git tree and abort commands
     --dry-run         display what actions this command will take, but not execute them
-    --auto            adds '-Xtheirs' to all rebase commands. When resolving conflicts will use subtree's changes.
+    --auto            adds '-Xtheirs' to rebases. When resolving conflicts will use subtree's changes.
     *                 all other options will be passed through to the internal rebase calls.
 
 Actions:
