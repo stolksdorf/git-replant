@@ -16,7 +16,7 @@ module.exports = {
 display : (cmds, effectedBranches)=>{
 	console.log();
 	console.log(color.yellow('effected branches:'));
-	console.log(effectedBranches.map((branch)=>`  * ${color.cyan(branch)}`).join('\n'));
+	console.log(effectedBranches.map((branch)=>`  * ${color.cyan(branch.name)}`).join('\n'));
 	console.log();
 	console.log(color.yellow(`will execute the following commands:`))
 	console.log(cmds.map((cmd)=>color.gray(`  ${cmd}`)).join('\n'));
@@ -32,6 +32,13 @@ execute : (cmd)=>{
 done : ()=>{
 	console.log();
 	console.log(color.green('🌱'), color.magenta('replant completed'), color.green('🌱'));
+},
+noop : ()=>{
+	console.log('No replant in progress.');
+},
+conflict : ()=>{
+	console.log(color.red('Issue with replant.'));
+	console.log('Fix the conflicts, continue with the rebase then `git replant --continue`');
 },
 
 manpage :`
@@ -59,7 +66,7 @@ Available options are
 
 Actions:
     --continue        continue the replant
-    --abort           abort
+    --abort           aborts and returns git tree to original state
 `,
 
 };
