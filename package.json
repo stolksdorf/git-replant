@@ -1,0 +1,21 @@
+{
+  "name": "git-replant",
+  "version": "0.0.1",
+  "description": "Rebase an entire git subtree to a new root",
+  "bin": "cli.js",
+  "main": "cli.js",
+  "scripts": {
+    "build" : "pkg --target=node10 --output=bin/git-replant.exe ./package.json"
+  },
+  "keywords": [
+    "git",
+    "rebase",
+    "recursive",
+    "replant"
+  ],
+  "author": "stolksdorf",
+  "license": "MIT",
+  "devDependencies": {
+    "pkg": "^4.4.0"
+  }
+}
