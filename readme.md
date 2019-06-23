@@ -2,25 +2,6 @@
 
 Rebase an entire git subtree to a new root
 
-## install
-
-### with node installed
-1. clone this repo
-1. Make a file called `git-replant` in your `$HOME/bin` folder with the following contents
-
-```bash
-#!/bin/bash
-node /path/to/cloned/repo/git-replant "$@"
-```
-
-### with executable
-Copy the `bin/git-replant.exe` into your `$HOME/bin` folder
-
-*Note*: The exe was created using [`pkg`](https://www.npmjs.com/package/pkg) via the `npm run build` command if you wish to build it yourself.
-
-
-## man page
-
 ```
 rebases a branch and all descendant branches to a new root while preserving the tree structure.
 
@@ -48,6 +29,24 @@ Actions:
     --continue        continue the replant
     --abort           aborts and returns git tree to original state
 ```
+
+
+## install
+
+### with node installed
+1. clone this repo
+1. make a file called `git-replant` in your `$HOME/bin` folder with the following contents
+
+```bash
+#!/bin/bash
+node /path/to/cloned/repo/git-replant "$@"
+```
+
+### with executable
+Copy the `bin/git-replant.exe` into your `$HOME/bin` folder
+
+*Note*: The exe was created using [`pkg`](https://www.npmjs.com/package/pkg) via the `npm run build` command if you wish to build it yourself.
+
 
 
 ## features
