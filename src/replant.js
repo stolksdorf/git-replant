@@ -23,7 +23,6 @@ const iterate = async ()=>{
 	await progressFile.update(rest);
 
 	log.execute(cmd);
-	//iterate();
 	return exec(cmd)
 		.then(()=>iterate())
 		.catch((err)=>log.conflict())

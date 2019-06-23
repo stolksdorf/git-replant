@@ -63,11 +63,6 @@ const getAffectedBranches = async (target, base)=>{
 		if(branch.name == base) log.error(`'${base}' is a descendant of '${target}'.`);
 		return branch;
 	});
-
-	// return [{
-	// 	name : target,
-	// 	sha : await getCommitFromBranch(target)
-	// }].concat(branches);
 };
 
 module.exports = {

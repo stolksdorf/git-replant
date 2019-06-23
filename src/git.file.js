@@ -4,9 +4,8 @@ const path = require('path');
 const exec = require('./exec.js');
 
 /***
-Manages a replant-progress file within the repo's .git directory
-That file tracks which commands still need to be done if the replant
-gets interupted
+Manages temporary git files within the repo's .git directory
+USed for tracking progress and what to do to abort
 ***/
 
 
@@ -15,33 +14,34 @@ const getFilePath = async (name)=>{
 		.then((repoPath)=>path.join(repoPath, '.git', name));
 }
 
-const fileExists = async (name)=>{
-	const fp = await getFilePath(name);
+const fileExists = async (fp)=>{
 	return await promisify(fs.access)(fp).then(()=>true).catch(()=>false);
 }
 
-const removeFile = async (name)=>{
-	const fp = await getFilePath(name);
-	if(await fileExists(name) === false) return console.log(`No replant in progress.`);
+const removeFile = async (fp)=>{
+	if(await fileExists(fp) === false) return console.log(`No replant in progress.`);
 	return promisify(fs.unlink)(fp);
 }
 
-const updateFile = async (name, cmds)=>{
-	const fp = await getFilePath(name);
+const updateFile = async (fp, cmds)=>{
 	return promisify(fs.writeFile)(fp, cmds.join('\n'), 'utf8');
 };
 
-const getFile = async (name)=>{
-	const fp = await getFilePath(name);
-	if(await fileExists(name) === false) return false;
+const getFile = async (fp)=>{
+	if(await fileExists(fp) === false) return false;
 	return await promisify(fs.readFile)(fp, 'utf8').then(x=>x.split('\n'));
 }
 
 module.exports = (name)=>{
+	let fp;
+	const get = async ()=>{
+		if(!fp) fp = await getFilePath(name);
+		return fp;
+	}
 	return {
-		remove : removeFile.bind(null, name),
-		update : updateFile.bind(null, name),
-		get    : getFile.bind(null, name),
-		exists : fileExists.bind(null, name),
+		remove : async ()=>removeFile(await get()),
+		update : async (cmds)=>updateFile(await get(), cmds),
+		get    : async ()=>getFile(await get()),
+		exists : async ()=>fileExists(await get()),
 	}
 }
