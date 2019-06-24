@@ -6,7 +6,12 @@ const getSHAFromBranch = async (target)=>{
 };
 const getParentBranch = async (target)=>{
 	return (await exec(`git log ${target} --simplify-by-decoration --max-count=1 --skip=1 --pretty=%D`))
-		.replace('HEAD -> ', '');
+		.split(',')
+		.map((br)=>br
+			.trim()
+			.replace('HEAD -> ', '')
+		)
+		.filter((br)=>br.indexOf('/') === -1);
 };
 const getChildBranches = async (name, sha)=>{
 	if(!sha) sha = await getSHAFromBranch(name);
@@ -28,12 +33,12 @@ const getTree = async (target, base)=>{
 
 	children.map((branch)=>{ if(branch.name == base) log.error(`'${base}' is a descendant of '${target}'.`); });
 
-	//Adds parent to branch, if it has a sibling, adds sibling name instead
+	//Adds parents to branch, if it has a sibling, adds sibling name instead
 	const _seenBranches = {};
 	const branches = await Promise.all(children.map(async (branch)=>{
 		if(_seenBranches[branch.sha]) return { ...branch, sibling : _seenBranches[branch.sha].name };
 		_seenBranches[branch.sha] = branch;
-		return { ...branch, parent : await getParentBranch(branch.name) };
+		return { ...branch, parents : await getParentBranch(branch.name) };
 	}));
 
 	return {
@@ -51,7 +56,7 @@ const getReplantCommands = async ({ target, base, branches }, opts = [])=>{
 	const rebaseCmds = [];
 	const walk = (name, sha)=>{
 		branches
-			.filter((br)=>br.parent == name)
+			.filter((br)=>br.parents && br.parents.includes(name))
 			.map((child)=>{
 				rebaseCmds.push(`git checkout ${child.name} && git rebase ${optsString}--onto ${name} ${sha}`);
 				walk(child.name, child.sha);

@@ -20,7 +20,7 @@ module.exports = {
 	verbose : (tree, abortCmds)=>{
 		console.log();
 		console.log(color.magenta('Affected Git Tree:'));
-		console.log(tree);
+		console.dir(tree, { depth : null });
 		console.log();
 		console.log(color.red('Abort Commands:'));
 		console.log(abortCmds.map((cmd)=>color.gray(`  ${cmd}`)).join('\n'));
